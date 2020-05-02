@@ -19,3 +19,8 @@ class Settings:
         # pygame icon
         self.icon = pygame.image.load('images/icon.bmp')
         pygame.display.set_icon(self.icon)
+
+        # Bullets
+        self.bullet_size = (20, 20)
+        self.bullet_speed = 5
+        self.bullet_damage = 10
