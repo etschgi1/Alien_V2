@@ -21,6 +21,8 @@ class Settings:
         pygame.display.set_icon(self.icon)
 
         # Bullets
-        self.bullet_size = (20, 20)
-        self.bullet_speed = 5
+        self.bullet_speed = 1.0
+        self.bullet_width = 3
+        self.bullet_height = 15
+        self.bullet_color = (20, 20, 20)
         self.bullet_damage = 10

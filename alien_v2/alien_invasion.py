@@ -2,6 +2,7 @@ import sys
 import pygame
 from settings import Settings
 from ship import Ship
+from bullet import Bullet
 
 
 class AlienInvasion:
@@ -16,9 +17,11 @@ class AlienInvasion:
         self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
         self.settings.screen_width, self.settings.screen_height = self.screen\
             .get_rect().width, self.screen.get_rect().height
+        pygame.display.set_caption("Alien Invasion")
         # ship init after screen because ship needs it to initialize
         self.ship = Ship(self)
-        pygame.display.set_caption("Alien Invasion")
+        # bullet init
+        self.bullets = pygame.sprite.Group()
 
     def run_game(self):
         """Starts the main game loop"""
@@ -27,6 +30,8 @@ class AlienInvasion:
             self._check_events()
             # update ship pos
             self.ship.update()
+            # update bullets
+            self.bullets.update()
             # update screen
             self._uptade_screen()
 
@@ -49,6 +54,9 @@ class AlienInvasion:
         if event.key == pygame.K_LEFT:
             # flag for movement to the left
             self.ship.moving_left = True
+        if event.key == pygame.K_SPACE:
+            self._fire_bullet()
+        # Toggle up/down movement
         if self.settings.up_down == True:
             if event.key == pygame.K_UP:
                 # flag for movement to the right
@@ -67,6 +75,7 @@ class AlienInvasion:
         if event.key == pygame.K_LEFT:
             # flag
             self.ship.moving_left = False
+        # Toggle up/down movement
         if self.settings.up_down == True:
             if event.key == pygame.K_UP:
                 # flag
@@ -75,12 +84,20 @@ class AlienInvasion:
                 # flag
                 self.ship.moving_down = False
 
+    def _fire_bullet(self):
+        """Create a new bullet and add it to the bullets group"""
+        new_bullet = Bullet(self)
+        self.bullets.add(new_bullet)
+
     def _uptade_screen(self):
         """Updates the screen"""
         # display background color set in settings class
         self.screen.fill(self.settings.bgc)
         # display ship
         self.ship.blitme()
+        # display bullets
+        for bullet in self.bullets.sprites():
+            bullet.draw_bullet()
         # display most recent screen
         pygame.display.flip()
 
